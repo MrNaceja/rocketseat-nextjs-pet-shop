@@ -1,5 +1,3 @@
-declare module "*.css";
+declare module '*.css';
 
-declare global {
-    
-}
+declare global {}
