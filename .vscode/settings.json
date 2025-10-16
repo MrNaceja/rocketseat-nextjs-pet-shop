@@ -5,5 +5,8 @@
     "source.organizeImports": "always",
     "source.removeUnusedImports": "always",
     "source.addMissingImports.ts": "always"
+  },
+  "[tailwindcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
