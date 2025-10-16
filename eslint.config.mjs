@@ -25,7 +25,7 @@ const eslintConfig = [
     rules: {
       'arrow-body-style': 'off',
       'prefer-arrow-callback': 'off',
-      indent: ['error', 2],
+      indent: ['error', 4],
     },
   },
 ];
