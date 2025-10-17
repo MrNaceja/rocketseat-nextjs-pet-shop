@@ -22,14 +22,16 @@
     --color-border-divisor: #353339;
 
     /* Accent Colors */
-    --color-accent-primary: #4f35e1;
-    --color-accent-primary-light: #7262fa;
+    --color-accent-brand: #4f35e1;
+    --color-accent-brand-light: #7262fa;
     --color-accent-blue: #027df0;
     --color-accent-blue-light: #16487a;
     --color-accent-yellow: #f0dc02;
     --color-accent-yellow-light: #75601b;
     --color-accent-orange: #f09102;
     --color-accent-orange-light: #75501b;
+
+    --shadow-cta: 0 0 40px --alpha(var(--color-background-highlights) / 30%);
 
     /* Typography */
     --font-sans: var(--font-inter);
@@ -70,9 +72,6 @@
         @apply max-w-[870px];
     }
 }
-@utility size-screen {
-    @apply w-screen h-screen;
-}
 
 @utility typo-title {
     font-size: 1.5rem; /* 24px */
@@ -108,4 +107,20 @@
     font-size: 0.75rem; /* 12px */
     line-height: 1rem; /* 16px */
     font-weight: 500;
+}
+
+::-webkit-scrollbar {
+    @apply size-4;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-background-primary rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-background-tertiary border-5 border-background-primary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-border-divisor;
 }
