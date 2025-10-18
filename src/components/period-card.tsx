@@ -3,9 +3,9 @@ import { PeriodTimes, PeriodTimesName } from '@/constants/period-times';
 import { DynamicIcon } from 'lucide-react/dynamic';
 import { ComponentProps } from 'react';
 
-interface PeriodCardProps extends ComponentProps<'section'> {
+type PeriodCardProps = ComponentProps<'section'> & {
     periodName: PeriodTimesName;
-}
+};
 export function PeriodCard({ periodName, ...props }: PeriodCardProps) {
     const [periodRange, periodIcon, periodDescription] =
         PeriodTimes[periodName];
@@ -40,7 +40,7 @@ export function PeriodCard({ periodName, ...props }: PeriodCardProps) {
                     >
                         <div className="flex items-center gap-4">
                             <time
-                                datetime=""
+                                dateTime=""
                                 className="typo-label-medium text-content-primary"
                             >
                                 09:00

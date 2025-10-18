@@ -1,3 +1,4 @@
+import { NewAppointmentDialog } from '@/components/new-appointment-dialog';
 import { PeriodCard } from '@/components/period-card';
 import { Button } from '@/components/ui/button';
 import { PeriodTimesName } from '@/constants/period-times';
@@ -13,6 +14,7 @@ export default function HomePage() {
                     height={20}
                     width={20}
                     className="size-5 aspect-square"
+                    priority
                 />
                 <figcaption className="uppercase text-content-brand typo-label-large">
                     Petshop
@@ -38,10 +40,11 @@ export default function HomePage() {
                     <PeriodCard periodName={PeriodTimesName.NIGHT} />
                 </div>
             </main>
-
-            <Button className="fixed bottom-8 right-8 shadow-cta">
-                Novo agendamento
-            </Button>
+            <NewAppointmentDialog>
+                <Button className="fixed bottom-8 right-8 shadow-cta">
+                    Novo agendamento
+                </Button>
+            </NewAppointmentDialog>
         </section>
     );
 }

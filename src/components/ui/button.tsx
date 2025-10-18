@@ -19,9 +19,7 @@ const button = cva('transition-colors', {
     },
 });
 
-interface ButtonProps
-    extends ComponentProps<'button'>,
-        VariantProps<typeof button> {}
+type ButtonProps = ComponentProps<'button'> & VariantProps<typeof button>;
 export function Button({ className, variant, ...props }: ButtonProps) {
     return <button {...props} className={button({ variant, className })} />;
 }

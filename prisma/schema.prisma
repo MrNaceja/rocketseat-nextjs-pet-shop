@@ -15,12 +15,12 @@ datasource db {
 }
 
 model Appointment {
-    id          String   @id @default(cuid())
-    tutor       String
-    pet         String
-    phone       String
-    description String
-    scheduleAt  DateTime
+    id         String   @id @default(cuid())
+    tutor      String
+    pet        String
+    phone      String
+    service    String
+    scheduleAt DateTime
 
     @@map("appointments")
 }

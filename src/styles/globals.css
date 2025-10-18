@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
 @theme inline {
     --color-*: initial;
@@ -35,29 +36,33 @@
 
     /* Typography */
     --font-sans: var(--font-inter);
+
+    --radius: 0.625rem;
+    --color-background: var(--color-background-primary);
+    --color-foreground: var(--color-content-primary);
+    --color-card: var(--color-background-secondary);
+    --color-card-foreground: var(--color-content-primary);
+    --color-popover: var(--color-background-secondary);
+    --color-popover-foreground: var(--color-content-primary);
+    --color-primary: var(--color-content-brand);
+    --color-primary-foreground: var(--color-content-primary);
+    --color-secondary: var(--color-background-tertiary);
+    --color-secondary-foreground: var(--color-content-primary);
+    --color-muted: var(--color-background-tertiary);
+    --color-muted-foreground: var(--color-content-secondary);
+    --color-accent: var(--color-accent-yellow);
+    --color-accent-foreground: var(--color-content-primary);
+    --color-destructive: #dc2626;
+    --color-destructive-foreground: #ffffff;
+    --color-border: var(--color-border-primary);
+    --color-input: var(--color-border-primary);
+    --color-ring: var(--color-border-brand);
 }
 
-:root {
-    --radius: 0.625rem;
-    --background: var(--color-background-primary);
-    --foreground: var(--color-content-primary);
-    --card: var(--color-background-secondary);
-    --card-foreground: var(--color-content-primary);
-    --popover: var(--color-background-secondary);
-    --popover-foreground: var(--color-content-primary);
-    --primary: var(--color-content-brand);
-    --primary-foreground: var(--color-content-primary);
-    --secondary: var(--color-background-tertiary);
-    --secondary-foreground: var(--color-content-primary);
-    --muted: var(--color-background-tertiary);
-    --muted-foreground: var(--color-content-secondary);
-    --accent: var(--color-accent-yellow);
-    --accent-foreground: var(--color-content-primary);
-    --destructive: #dc2626;
-    --destructive-foreground: #ffffff;
-    --border: var(--color-border-primary);
-    --input: var(--color-border-primary);
-    --ring: var(--color-border-brand);
+* {
+    &:focus {
+        @apply outline-border-brand outline-1;
+    }
 }
 
 @layer base {
