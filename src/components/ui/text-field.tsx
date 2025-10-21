@@ -27,7 +27,7 @@ export function TextField({
                 {leadingIcon && (
                     <DynamicIcon
                         name={leadingIcon}
-                        className="absolute top-[50%] translate-y-[-50%] left-3 size-6 text-content-brand fill-accent-brand-light"
+                        className="absolute top-[50%] translate-y-[-50%] left-3 size-6 text-content-brand fill-accent-brand-light/25"
                     />
                 )}
 

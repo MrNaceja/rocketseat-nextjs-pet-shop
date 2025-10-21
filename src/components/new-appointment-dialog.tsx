@@ -1,9 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Dialog } from '@/components/ui/dialog';
 import { TextArea } from '@/components/ui/text-area';
 import { TextField } from '@/components/ui/text-field';
+import { TimePicker } from '@/components/ui/time-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogProps } from '@radix-ui/react-dialog';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -20,6 +22,10 @@ const newAppointmentFormSchema = z4.object({
         .nonempty('Nome do pet é obrigatório'),
     phone: z4.string().nonempty('Telefone de contato é obrigatório'),
     service: z4.string().nonempty('Serviço é obrigatório'),
+    scheduleDateAt: z4
+        .date()
+        .nonoptional('A data do agendamento é obrigatória'),
+    scheduleTimeAt: z4.string().min(4, 'A hora do agendamento é obrigatória'),
 });
 type NewAppointmentFormValues = z4.infer<typeof newAppointmentFormSchema>;
 
@@ -34,6 +40,8 @@ export function NewAppointmentDialog({
             tutor: '',
             phone: '',
             service: '',
+            scheduleDateAt: new Date(),
+            scheduleTimeAt: '',
         },
     });
 
@@ -41,11 +49,18 @@ export function NewAppointmentDialog({
         values
     ) => {};
 
+    const handleOpenStateChange = (open: boolean) => {
+        if (!open) {
+            // When closes dialog, reset form fields
+            newAppointmentForm.reset();
+        }
+    };
+
     return (
-        <Dialog.Root {...props}>
+        <Dialog.Root {...props} onOpenChange={handleOpenStateChange}>
             <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 
-            <Dialog.Modal>
+            <Dialog.Modal className="min-w-fit">
                 <Dialog.Body asChild>
                     <form
                         onSubmit={newAppointmentForm.handleSubmit(
@@ -120,9 +135,53 @@ export function NewAppointmentDialog({
                             Descrição do serviço
                         </TextArea>
 
+                        <div className="grid grid-cols-2 gap-4">
+                            <Controller
+                                control={newAppointmentForm.control}
+                                name="scheduleDateAt"
+                                render={({ field }) => (
+                                    <DatePicker
+                                        {...field}
+                                        error={
+                                            newAppointmentForm.formState.errors
+                                                .scheduleDateAt
+                                        }
+                                        placeholder="--/--/----"
+                                    >
+                                        Data
+                                    </DatePicker>
+                                )}
+                            />
+                            <Controller
+                                control={newAppointmentForm.control}
+                                name="scheduleTimeAt"
+                                render={({ field }) => (
+                                    <TimePicker
+                                        {...field}
+                                        error={
+                                            newAppointmentForm.formState.errors
+                                                .scheduleTimeAt
+                                        }
+                                        placeholder="--:--"
+                                    >
+                                        Hora
+                                    </TimePicker>
+                                )}
+                            />
+                        </div>
+
                         <Dialog.Footer>
                             {/* <Dialog.Dismissable asChild> */}
-                            <Button type="submit">Agendar</Button>
+                            <Button
+                                type="submit"
+                                disabled={
+                                    newAppointmentForm.formState.isSubmitting
+                                }
+                            >
+                                {newAppointmentForm.formState.isSubmitting
+                                    ? 'Agendando...'
+                                    : 'Agendar'}
+                            </Button>
                             {/* </Dialog.Dismissable> */}
                         </Dialog.Footer>
                     </form>
