@@ -47,7 +47,11 @@ export function NewAppointmentDialog({
 
     const onSubmitCreateAppointment: SubmitHandler<NewAppointmentFormValues> = (
         values
-    ) => {};
+    ) => {
+        const [hour, minutes] = values.scheduleTimeAt;
+        const { scheduleDateAt } = values;
+        scheduleDateAt.setHours(Number(hour), Number(minutes), 0, 0);
+    };
 
     const handleOpenStateChange = (open: boolean) => {
         if (!open) {
