@@ -1,13 +1,30 @@
 import { NewAppointmentDialog } from '@/components/new-appointment-dialog';
 import { PeriodCard } from '@/components/period-card';
+import { PeriodDateFilter } from '@/components/period-date-filter';
 import { Button } from '@/components/ui/button';
 import { PeriodTimes, PeriodTimesName } from '@/constants/period-times';
 import { Appointment } from '@/generated/prisma';
 import { prisma } from '@/lib/prisma';
+import { parseDateDDMMYYYY } from '@/utils/parsers/parse-date-dd-mm-yyyy';
 import Image from 'next/image';
 
-export default async function HomePage() {
-    const appointments = await prisma.appointment.findMany();
+type HomePageProps = PageProps<'/'> & {
+    searchParams: Promise<{ period: string }>;
+};
+export default async function HomePage({ searchParams }: HomePageProps) {
+    const { period } = await searchParams;
+    const periodDateFiltered = parseDateDDMMYYYY(period);
+
+    const appointments = await prisma.appointment.findMany({
+        where: {
+            scheduleAt: {
+                gte: periodDateFiltered,
+            },
+        },
+        orderBy: {
+            scheduleAt: 'asc',
+        },
+    });
     const {
         morning: morningAppointments,
         afternoon: afternoonAppointments,
@@ -65,6 +82,8 @@ export default async function HomePage() {
                             agendados para hoje.
                         </p>
                     </div>
+
+                    <PeriodDateFilter />
                 </header>
 
                 <div className="space-y-3 overflow-y-auto h-full">

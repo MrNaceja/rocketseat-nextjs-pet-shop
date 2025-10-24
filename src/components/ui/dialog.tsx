@@ -45,7 +45,7 @@ function DialogOverlay({
     );
 }
 
-function DialogModal({
+function DialogPopup({
     className,
     children,
     showCloseButton = false,
@@ -59,7 +59,7 @@ function DialogModal({
             <DialogPrimitive.Content
                 data-slot="dialog-content"
                 className={cn(
-                    'bg-background-tertiary data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] rounded-lg shadow-lg duration-200 sm:max-w-lg',
+                    'p-10 bg-background-tertiary data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] rounded-lg shadow-lg duration-200 sm:max-w-lg',
                     className
                 )}
                 {...props}
@@ -102,7 +102,7 @@ function DialogBody({
         <Comp
             {...props}
             data-slot="dialog-body"
-            className={cn('p-10 space-y-7', className)}
+            className={cn('space-y-7', className)}
         />
     );
 }
@@ -152,7 +152,7 @@ function DialogDescription({
 export const Dialog = {
     Root: DialogRoot,
     Dismissable: DialogDismissable,
-    Modal: DialogModal,
+    Popup: DialogPopup,
     Description: DialogDescription,
     Title: DialogTitle,
     Header: DialogHeader,

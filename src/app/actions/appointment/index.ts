@@ -1,6 +1,7 @@
 'use server';
 
 import { PERIOD_TIMES_FORMATTED, PeriodTimes } from '@/constants/period-times';
+import { Appointment } from '@/generated/prisma';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import z4 from 'zod/v4';
@@ -54,6 +55,16 @@ export async function createAppointment(
     await prisma.appointment.create({
         data: {
             ...appointmentPayload,
+        },
+    });
+
+    revalidatePath('/');
+}
+
+export async function deleteAppointment(id: Appointment['id']) {
+    await prisma.appointment.delete({
+        where: {
+            id,
         },
     });
 

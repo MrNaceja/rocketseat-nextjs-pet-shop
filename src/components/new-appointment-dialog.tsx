@@ -1,6 +1,6 @@
 'use client';
 
-import { createAppointment } from '@/app/actions';
+import { createAppointment } from '@/app/actions/appointment';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Dialog } from '@/components/ui/dialog';
@@ -100,7 +100,7 @@ export function NewAppointmentDialog({
         >
             <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 
-            <Dialog.Modal className="min-w-fit">
+            <Dialog.Popup className="min-w-fit">
                 <Dialog.Body asChild>
                     <form
                         onSubmit={newAppointmentForm.handleSubmit(
@@ -226,7 +226,7 @@ export function NewAppointmentDialog({
                         </Dialog.Footer>
                     </form>
                 </Dialog.Body>
-            </Dialog.Modal>
+            </Dialog.Popup>
         </Dialog.Root>
     );
 }

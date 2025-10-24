@@ -1,3 +1,5 @@
+'use client';
+
 import { Calendar } from '@/components/ui/calendar';
 import { Label } from '@/components/ui/label';
 import { Popover } from '@/components/ui/popover';

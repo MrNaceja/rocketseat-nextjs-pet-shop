@@ -1,3 +1,7 @@
+'use client';
+
+import { deleteAppointment } from '@/app/actions/appointment';
+import { ConfirmDeleteAppointmentDialog } from '@/components/confirm-delete-appointment-dialog';
 import { Button } from '@/components/ui/button';
 import { PeriodTimes, PeriodTimesName } from '@/constants/period-times';
 import { Appointment } from '@/generated/prisma';
@@ -20,6 +24,11 @@ export function PeriodCard({
     const [periodStarts, periodEnds] = periodRange;
 
     const hasAppointments = appointments.length > 0;
+
+    const withHandlerConfirmDeleteAppointment =
+        (id: Appointment['id']) => async () => {
+            await deleteAppointment(id);
+        };
 
     return (
         <section
@@ -70,7 +79,15 @@ export function PeriodCard({
                                 {appointment.service}
                             </span>
 
-                            <Button variant="link">Remover agendamento</Button>
+                            <ConfirmDeleteAppointmentDialog
+                                onConfirm={withHandlerConfirmDeleteAppointment(
+                                    appointment.id
+                                )}
+                            >
+                                <Button variant="link">
+                                    Remover agendamento
+                                </Button>
+                            </ConfirmDeleteAppointmentDialog>
                         </li>
                     ))}
                 </ul>
