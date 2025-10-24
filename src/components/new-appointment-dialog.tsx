@@ -1,5 +1,6 @@
 'use client';
 
+import { createAppointment } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Dialog } from '@/components/ui/dialog';
@@ -9,6 +10,7 @@ import { TimePicker } from '@/components/ui/time-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogProps } from '@radix-ui/react-dialog';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import z4 from 'zod/v4';
 
 const newAppointmentFormSchema = z4.object({
@@ -45,12 +47,34 @@ export function NewAppointmentDialog({
         },
     });
 
-    const onSubmitCreateAppointment: SubmitHandler<NewAppointmentFormValues> = (
-        values
-    ) => {
-        const [hour, minutes] = values.scheduleTimeAt;
+    const onSubmitCreateAppointment: SubmitHandler<
+        NewAppointmentFormValues
+    > = async (values) => {
+        const [hour, minutes] = values.scheduleTimeAt.split(':');
         const { scheduleDateAt } = values;
-        scheduleDateAt.setHours(Number(hour), Number(minutes), 0, 0);
+        const scheduleAt = new Date(scheduleDateAt);
+        scheduleAt.setHours(Number(hour), Number(minutes), 0, 0);
+        console.log({
+            scheduleAt,
+            hour,
+            minutes,
+        });
+        toast.promise(
+            createAppointment({
+                ...values,
+                scheduleAt,
+            }),
+            {
+                loading: 'Agendando...',
+                success: 'Agendamento realizado com sucesso!',
+                error(e) {
+                    console.error(e);
+                    return {
+                        message: `Falha ao realizar o agendamento. ${(e as Error).message}`,
+                    };
+                },
+            }
+        );
     };
 
     const handleOpenStateChange = (open: boolean) => {

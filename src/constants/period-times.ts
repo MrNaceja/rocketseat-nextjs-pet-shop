@@ -17,3 +17,11 @@ export const PeriodTimes: Record<
 
 export type PeriodTimesType = typeof PeriodTimes;
 export type PeridoTimesMeta = PeriodTimesType[PeriodTimesName];
+
+export const PERIOD_TIMES_FORMATTED = Object.values(PeriodTimes)
+    .reduce((formatted, [periods]) => {
+        const [periodStarts, periodEnds] = periods;
+
+        return [...formatted, `${periodStarts}h e ${periodEnds}h`];
+    }, [] as string[])
+    .join(' ou ');

@@ -1,12 +1,45 @@
 import { NewAppointmentDialog } from '@/components/new-appointment-dialog';
 import { PeriodCard } from '@/components/period-card';
 import { Button } from '@/components/ui/button';
-import { PeriodTimesName } from '@/constants/period-times';
+import { PeriodTimes, PeriodTimesName } from '@/constants/period-times';
+import { Appointment } from '@/generated/prisma';
+import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 
-export default function HomePage() {
+export default async function HomePage() {
+    const appointments = await prisma.appointment.findMany();
+    const {
+        morning: morningAppointments,
+        afternoon: afternoonAppointments,
+        night: nightAppointments,
+    } = appointments.reduce(
+        (periodAppointments, appointment) => {
+            const appointmentPeriod = appointment.scheduleAt.getHours();
+
+            for (const [periodName, [periods]] of Object.entries(PeriodTimes)) {
+                const [periodStarts, periodEnds] = periods;
+                if (
+                    appointmentPeriod >= periodStarts &&
+                    appointmentPeriod < periodEnds
+                ) {
+                    periodAppointments[periodName as PeriodTimesName].push(
+                        appointment
+                    );
+                    break;
+                }
+            }
+
+            return periodAppointments;
+        },
+        {
+            [PeriodTimesName.MORNING]: [],
+            [PeriodTimesName.AFTERNOON]: [],
+            [PeriodTimesName.NIGHT]: [],
+        } as Record<PeriodTimesName, Appointment[]>
+    );
+
     return (
-        <section className="h-screen overflow-hidden space-y-2">
+        <div className="h-screen overflow-hidden space-y-2">
             <figure className="bg-background-tertiary px-5 py-3 rounded-br-xl flex items-center gap-2 w-fit">
                 <Image
                     src="/icon.svg"
@@ -35,9 +68,18 @@ export default function HomePage() {
                 </header>
 
                 <div className="space-y-3 overflow-y-auto h-full">
-                    <PeriodCard periodName={PeriodTimesName.MORNING} />
-                    <PeriodCard periodName={PeriodTimesName.AFTERNOON} />
-                    <PeriodCard periodName={PeriodTimesName.NIGHT} />
+                    <PeriodCard
+                        periodName={PeriodTimesName.MORNING}
+                        appointments={morningAppointments}
+                    />
+                    <PeriodCard
+                        periodName={PeriodTimesName.AFTERNOON}
+                        appointments={afternoonAppointments}
+                    />
+                    <PeriodCard
+                        periodName={PeriodTimesName.NIGHT}
+                        appointments={nightAppointments}
+                    />
                 </div>
             </main>
             <NewAppointmentDialog>
@@ -45,6 +87,6 @@ export default function HomePage() {
                     Novo agendamento
                 </Button>
             </NewAppointmentDialog>
-        </section>
+        </div>
     );
 }

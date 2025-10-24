@@ -1,12 +1,19 @@
 import { Button } from '@/components/ui/button';
 import { PeriodTimes, PeriodTimesName } from '@/constants/period-times';
+import { Appointment } from '@/generated/prisma';
+import { formatSchedulePeriodDate } from '@/utils/formatters/schedule-period-date';
 import { DynamicIcon } from 'lucide-react/dynamic';
 import { ComponentProps } from 'react';
 
 type PeriodCardProps = ComponentProps<'section'> & {
     periodName: PeriodTimesName;
+    appointments: Appointment[];
 };
-export function PeriodCard({ periodName, ...props }: PeriodCardProps) {
+export function PeriodCard({
+    periodName,
+    appointments,
+    ...props
+}: PeriodCardProps) {
     const [periodRange, periodIcon, periodDescription] =
         PeriodTimes[periodName];
     const [periodStarts, periodEnds] = periodRange;
@@ -33,28 +40,30 @@ export function PeriodCard({ periodName, ...props }: PeriodCardProps) {
                 </span>
             </header>
             <ul className="min-h-32 divide-y divide-border-divisor p-5">
-                {Array.from({ length: 5 }).map((_, idx) => (
+                {appointments.map((appointment) => (
                     <li
-                        key={`item-${idx}`}
+                        key={appointment.id}
                         className="flex items-center gap-4 justify-between py-4 px-3 flex-wrap"
                     >
                         <div className="flex items-center gap-4">
                             <time
-                                dateTime=""
+                                dateTime={appointment.scheduleAt.toISOString()}
                                 className="typo-label-medium text-content-primary"
                             >
-                                09:00
+                                {formatSchedulePeriodDate(
+                                    appointment.scheduleAt
+                                )}
                             </time>
                             <h5 className="typo-paragraph-small text-content-secondary">
                                 <strong className="typo-label-small text-content-primary mr-1">
-                                    Pet Name
+                                    {appointment.pet}
                                 </strong>
-                                / Tutor Name
+                                / {appointment.tutor}
                             </h5>
                         </div>
 
                         <span className="typo-paragraph-small text-content-secondary">
-                            Atividade
+                            {appointment.service}
                         </span>
 
                         <Button variant="link">Remover agendamento</Button>
