@@ -2,6 +2,7 @@
 
 import { PERIOD_TIMES_FORMATTED, PeriodTimes } from '@/constants/period-times';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 import z4 from 'zod/v4';
 
 const createAppointmentSchema = z4.object({
@@ -55,4 +56,6 @@ export async function createAppointment(
             ...appointmentPayload,
         },
     });
+
+    revalidatePath('/');
 }

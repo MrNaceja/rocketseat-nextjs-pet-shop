@@ -9,6 +9,7 @@ import { TextField } from '@/components/ui/text-field';
 import { TimePicker } from '@/components/ui/time-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogProps } from '@radix-ui/react-dialog';
+import { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z4 from 'zod/v4';
@@ -35,6 +36,7 @@ export function NewAppointmentDialog({
     children: trigger,
     ...props
 }: DialogProps) {
+    const [open, setOpen] = useState(false);
     const newAppointmentForm = useForm({
         resolver: zodResolver(newAppointmentFormSchema),
         defaultValues: {
@@ -66,7 +68,12 @@ export function NewAppointmentDialog({
             }),
             {
                 loading: 'Agendando...',
-                success: 'Agendamento realizado com sucesso!',
+                success() {
+                    setOpen(false);
+                    return {
+                        message: 'Agendamento realizado com sucesso!',
+                    };
+                },
                 error(e) {
                     console.error(e);
                     return {
@@ -82,10 +89,15 @@ export function NewAppointmentDialog({
             // When closes dialog, reset form fields
             newAppointmentForm.reset();
         }
+        setOpen(open);
     };
 
     return (
-        <Dialog.Root {...props} onOpenChange={handleOpenStateChange}>
+        <Dialog.Root
+            {...props}
+            onOpenChange={handleOpenStateChange}
+            open={open}
+        >
             <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 
             <Dialog.Modal className="min-w-fit">
